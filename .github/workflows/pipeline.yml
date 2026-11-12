@@ -37,3 +37,11 @@ jobs:
 
       # Configuración insegura en el Dockerfile (IaC / contenedores)
       - run: docker run --rm -v "$PWD":/src aquasec/trivy:0.76.2 config --exit-code 1 --severity HIGH,CRITICAL /src
+
+      # DAST: probar la app en ejecución
+      - run: node app.js &
+      - run: curl --retry 10 --retry-connrefused --retry-delay 1 -s "http://localhost:3000/total?p=10&c=2"
+      - uses: zaproxy/action-baseline@6c5a007541891231cd9e0ddec25d4f25c59c9874 # v0.15.0
+        with:
+          target: "http://localhost:3000/total?p=10&c=2"
+          allow_issue_writing: false
