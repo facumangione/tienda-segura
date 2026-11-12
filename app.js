@@ -1,4 +1,6 @@
 const express = require("express");
+// nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
+// Sin CSRF a propósito: API JSON de solo lectura (GET), sin cookies ni sesión.
 const app = express();
 
 const total = (precio, cant, desc) =>
